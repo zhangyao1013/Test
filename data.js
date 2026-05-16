@@ -1,0 +1,202 @@
+const ISSUES_DATA = [
+  {
+    "id": 1,
+    "description": "张三：电动车违停导致通行受阻",
+    "assignee": "张三",
+    "type": "功能问题",
+    "created": "2026-05-16 09:00",
+    "status": "延期修复",
+    "priority_score": 8,
+    "resolve_hours": 36
+  },
+  {
+    "id": 2,
+    "description": "李四：登录按钮颜色与风格不一致",
+    "assignee": "李四",
+    "type": "体验问题",
+    "created": "2026-05-16 10:30",
+    "status": "正常",
+    "priority_score": 4,
+    "resolve_hours": 12
+  },
+  {
+    "id": 3,
+    "description": "王五：表单验证未提示必要字段",
+    "assignee": "王五",
+    "type": "功能问题",
+    "created": "2026-05-16 11:20",
+    "status": "延期修复",
+    "priority_score": 7,
+    "resolve_hours": 48
+  },
+  {
+    "id": 4,
+    "description": "赵六：页面滚动时卡顿体验差",
+    "assignee": "赵六",
+    "type": "体验问题",
+    "created": "2026-05-16 12:05",
+    "status": "正常",
+    "priority_score": 5,
+    "resolve_hours": 18
+  },
+  {
+    "id": 5,
+    "description": "孙八：搜索相关功能异常",
+    "assignee": "孙八",
+    "type": "功能问题",
+    "created": "2026-05-18 09:00",
+    "status": "正常",
+    "priority_score": 4,
+    "resolve_hours": 32
+  },
+  {
+    "id": 6,
+    "description": "钱七：登录相关体验异常",
+    "assignee": "钱七",
+    "type": "体验问题",
+    "created": "2026-05-19 16:00",
+    "status": "正常",
+    "priority_score": 2,
+    "resolve_hours": 31
+  },
+  {
+    "id": 7,
+    "description": "钱七：通知相关功能异常",
+    "assignee": "钱七",
+    "type": "功能问题",
+    "created": "2026-05-25 12:00",
+    "status": "已关闭",
+    "priority_score": 4,
+    "resolve_hours": 61
+  },
+  {
+    "id": 8,
+    "description": "李四：权限相关性能异常",
+    "assignee": "李四",
+    "type": "性能问题",
+    "created": "2026-05-19 13:00",
+    "status": "延期修复",
+    "priority_score": 5,
+    "resolve_hours": 23
+  },
+  {
+    "id": 9,
+    "description": "张三：权限相关体验异常",
+    "assignee": "张三",
+    "type": "体验问题",
+    "created": "2026-05-28 08:45",
+    "status": "正常",
+    "priority_score": 6,
+    "resolve_hours": 37
+  },
+  {
+    "id": 10,
+    "description": "钱七：表单相关功能异常",
+    "assignee": "钱七",
+    "type": "功能问题",
+    "created": "2026-05-29 18:30",
+    "status": "延期修复",
+    "priority_score": 9,
+    "resolve_hours": 41
+  },
+  {
+    "id": 11,
+    "description": "钱七：表单相关功能异常",
+    "assignee": "钱七",
+    "type": "功能问题",
+    "created": "2026-05-28 12:00",
+    "status": "已关闭",
+    "priority_score": 1,
+    "resolve_hours": 33
+  },
+  {
+    "id": 12,
+    "description": "李四：搜索相关功能异常",
+    "assignee": "李四",
+    "type": "功能问题",
+    "created": "2026-05-18 13:30",
+    "status": "延期修复",
+    "priority_score": 8,
+    "resolve_hours": 50
+  },
+  {
+    "id": 13,
+    "description": "李四：表单相关性能异常",
+    "assignee": "李四",
+    "type": "性能问题",
+    "created": "2026-05-24 11:15",
+    "status": "延期修复",
+    "priority_score": 10,
+    "resolve_hours": 25
+  },
+  {
+    "id": 14,
+    "description": "赵六：支付相关体验异常",
+    "assignee": "赵六",
+    "type": "体验问题",
+    "created": "2026-05-19 08:30",
+    "status": "延期修复",
+    "priority_score": 6,
+    "resolve_hours": 11
+  },
+  {
+    "id": 15,
+    "description": "赵六：支付相关体验异常",
+    "assignee": "赵六",
+    "type": "体验问题",
+    "created": "2026-05-19 18:45",
+    "status": "正常",
+    "priority_score": 10,
+    "resolve_hours": 44
+  },
+  {
+    "id": 16,
+    "description": "赵六：列表相关性能异常",
+    "assignee": "赵六",
+    "type": "性能问题",
+    "created": "2026-05-19 16:30",
+    "status": "延期修复",
+    "priority_score": 5,
+    "resolve_hours": 21
+  },
+  {
+    "id": 17,
+    "description": "孙八：通知相关性能异常",
+    "assignee": "孙八",
+    "type": "性能问题",
+    "created": "2026-05-18 16:45",
+    "status": "延期修复",
+    "priority_score": 6,
+    "resolve_hours": 32
+  },
+  {
+    "id": 18,
+    "description": "张三：列表相关功能异常",
+    "assignee": "张三",
+    "type": "功能问题",
+    "created": "2026-05-25 09:45",
+    "status": "正常",
+    "priority_score": 3,
+    "resolve_hours": 58
+  },
+  {
+    "id": 19,
+    "description": "赵六：搜索相关性能异常",
+    "assignee": "赵六",
+    "type": "性能问题",
+    "created": "2026-05-26 09:30",
+    "status": "延期修复",
+    "priority_score": 9,
+    "resolve_hours": 5
+  },
+  {
+    "id": 20,
+    "description": "孙八：搜索相关体验异常",
+    "assignee": "孙八",
+    "type": "体验问题",
+    "created": "2026-05-23 08:30",
+    "status": "正常",
+    "priority_score": 7,
+    "resolve_hours": 24
+  }
+];

@@ -1,197 +1,264 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>示例网站</title>
-    <meta name="description" content="一个简单的响应式示例网站" />
-    <style>
-        :root{
-            --bg:#0f1724; --card:#0b1220; --accent:#06b6d4; --muted:#9aa6b2; --glass: rgba(255,255,255,0.04);
-            --radius:12px; --maxw:1100px;
-            color-scheme: dark;
-        }
-        *{box-sizing:border-box}
-        html,body{height:100%}
-        body{
-            margin:0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-            background: linear-gradient(180deg,#071027 0%, #081226 60%);
-            color:#e6eef3; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-            display:flex; align-items:center; justify-content:center; padding:40px;
-        }
-
-        .site{
-            width:100%; max-width:var(--maxw);
-            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-            border:1px solid rgba(255,255,255,0.04);
-            border-radius:calc(var(--radius) + 4px);
-            overflow:hidden; box-shadow: 0 6px 30px rgba(2,6,23,0.6);
-        }
-
-        header{
-            display:flex; align-items:center; justify-content:space-between;
-            padding:18px 22px; gap:12px;
-            background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
-            border-bottom:1px solid rgba(255,255,255,0.02);
-        }
-        .brand{display:flex; align-items:center; gap:12px;}
-        .logo{
-            width:44px; height:44px; border-radius:10px;
-            background:linear-gradient(135deg,var(--accent), #7c3aed);
-            display:flex; align-items:center; justify-content:center; font-weight:700;
-            box-shadow:0 6px 20px rgba(6,182,212,0.12);
-        }
-        nav{display:flex; gap:14px; align-items:center}
-        nav a{color:var(--muted); text-decoration:none; font-weight:600; padding:8px 10px; border-radius:8px;}
-        nav a:hover{background:var(--glass); color:#fff}
-
-        .hero{
-            display:grid; grid-template-columns:1fr 360px; gap:22px; padding:30px;
-            align-items:start;
-        }
-        .hero-left h1{margin:0 0 10px 0; font-size:28px}
-        .lead{color:var(--muted); margin:0 0 18px 0; max-width:60ch; line-height:1.6}
-        .features{display:flex; gap:12px; flex-wrap:wrap}
-        .chip{background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.02); padding:8px 12px; border-radius:999px; color:var(--muted); font-weight:600; font-size:13px}
-
-        .card{
-            background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
-            border-radius:12px; padding:18px; border:1px solid rgba(255,255,255,0.02);
-        }
-
-        .signup{display:flex; flex-direction:column; gap:12px}
-        input[type="text"],input[type="email"],textarea{
-            width:100%; padding:10px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.04);
-            background:transparent; color:inherit; outline:none;
-        }
-        button{
-            background:linear-gradient(90deg,var(--accent), #7c3aed); color:#021018; border:none; padding:10px 14px; border-radius:10px; font-weight:700; cursor:pointer;
-            box-shadow: 0 8px 24px rgba(6,182,212,0.12);
-        }
-        small{color:var(--muted)}
-
-        footer{padding:18px 22px; border-top:1px solid rgba(255,255,255,0.02); display:flex; justify-content:space-between; align-items:center; gap:12px}
-
-        @media (max-width:880px){
-            body{padding:18px}
-            .hero{grid-template-columns:1fr; padding:18px}
-            .brand .logo{width:40px;height:40px}
-            .lead{max-width:100%}
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>问题数据看板</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f7fa;
+      color: #0f172a;
+    }
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+    .subtitle {
+      margin: 0 0 20px;
+      color: #64748b;
+      font-size: 14px;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .stat-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 14px 16px;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
+    }
+    .stat-card .label {
+      font-size: 12px;
+      color: #64748b;
+    }
+    .stat-card .value {
+      margin-top: 4px;
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .charts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .chart-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 16px;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
+    }
+    .chart-card h2 {
+      margin: 0 0 12px;
+      font-size: 15px;
+      color: #334155;
+    }
+    .table-wrap {
+      background: #fff;
+      border-radius: 10px;
+      overflow: auto;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+    th, td {
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 14px;
+    }
+    th {
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      background: #f8fafc;
+      position: sticky;
+      top: 0;
+    }
+    td { color: #475569; }
+    .status {
+      font-weight: 600;
+    }
+    .status-delay { color: #b91c1c; }
+    .status-ok { color: #0f766e; }
+    .status-closed { color: #64748b; }
+    .empty {
+      padding: 48px;
+      text-align: center;
+      color: #64748b;
+    }
+    .empty code {
+      background: #e2e8f0;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body>
-    <div class="site" role="main">
-        <header>
-            <div class="brand">
-                <div class="logo" aria-hidden="true">S</div>
-                <div>
-                    <div style="font-weight:800">示例站</div>
-                    <div style="font-size:12px;color:var(--muted)">快速预览模板</div>
-                </div>
-            </div>
-            <nav aria-label="主导航">
-                <a href="#features">功能</a>
-                <a href="#pricing">定价</a>
-                <a href="#contact">联系我们</a>
-            </nav>
-        </header>
+  <div class="page" id="app"></div>
 
-        <section class="hero">
-            <div class="hero-left">
-                <h1>构建漂亮、响应式的网站 — 仅需几分钟</h1>
-                <p class="lead">这是一个轻量级的静态示例页面，包含导航、功能展示、表单与响应式布局。你可以把它作为起点，扩展成你的项目。</p>
+  <script src="data.js"></script>
+  <script>
+    const COLUMNS = [
+      { key: 'id', label: 'ID' },
+      { key: 'description', label: '问题描述' },
+      { key: 'assignee', label: '跟进人' },
+      { key: 'type', label: '问题类型' },
+      { key: 'created', label: '录入时间' },
+      { key: 'status', label: '问题状态' },
+      { key: 'priority_score', label: '优先级' },
+      { key: 'resolve_hours', label: '处理时长(h)' },
+    ];
 
-                <div class="features">
-                    <div class="chip">响应式</div>
-                    <div class="chip">无框架</div>
-                    <div class="chip">可定制</div>
-                    <div class="chip">轻量</div>
-                </div>
+    const STATUS_CLASS = {
+      '延期修复': 'status-delay',
+      '正常': 'status-ok',
+      '已关闭': 'status-closed',
+    };
 
-                <div style="margin-top:18px; display:flex; gap:10px;">
-                    <button id="get-started">立即开始</button>
-                    <a href="#contact" style="align-self:center; color:var(--muted); text-decoration:none; font-weight:700">联系我们 →</a>
-                </div>
-            </div>
+    function countBy(items, key) {
+      return items.reduce((acc, row) => {
+        const v = row[key];
+        acc[v] = (acc[v] || 0) + 1;
+        return acc;
+      }, {});
+    }
 
-            <aside class="card">
-                <h3 style="margin-top:0">注册获取更新</h3>
-                <form id="signup" class="signup" onsubmit="return false;">
-                    <input type="text" id="name" placeholder="你的姓名" required />
-                    <input type="email" id="email" placeholder="电子邮件" required />
-                    <button type="submit" id="submit">注册</button>
-                    <small id="msg">我们会通过邮件发送最新动态。不会发送垃圾邮件。</small>
-                </form>
-            </aside>
-        </section>
+    function statusClass(status) {
+      return STATUS_CLASS[status] || 'status-ok';
+    }
 
-        <section id="features" style="padding:22px; display:grid; gap:12px">
-            <div class="card">
-                <h3 style="margin:0 0 8px 0">特点一览</h3>
-                <p style="margin:0;color:var(--muted)">此模板演示基础组件：头部、响应式布局、卡片、按钮和简易表单。易于复制并作为项目起点。</p>
-            </div>
+    function renderEmpty(root) {
+      root.innerHTML = `
+        <h1>问题数据看板</h1>
+        <div class="empty">
+          <p>未找到测试数据，请先生成：</p>
+          <p><code>.venv/bin/python generate_data.py</code></p>
+        </div>
+      `;
+    }
 
-            <div class="card" id="pricing">
-                <h3 style="margin:0 0 8px 0">示例定价</h3>
-                <div style="display:flex; gap:12px; flex-wrap:wrap">
-                    <div style="flex:1;min-width:200px;padding:12px;border-radius:10px;background:rgba(255,255,255,0.01);">
-                        <strong>免费</strong>
-                        <div style="color:var(--muted)">基本功能，个人使用</div>
-                        <div style="margin-top:10px"><strong>¥0</strong>/月</div>
-                    </div>
-                    <div style="flex:1;min-width:200px;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00)); border:1px solid rgba(255,255,255,0.02);">
-                        <strong>专业</strong>
-                        <div style="color:var(--muted)">额外支持与自定义</div>
-                        <div style="margin-top:10px"><strong>¥29</strong>/月</div>
-                    </div>
-                </div>
-            </div>
+    function renderStats(items) {
+      const byStatus = countBy(items, 'status');
+      const delayed = byStatus['延期修复'] || 0;
+      return `
+        <div class="stats">
+          <div class="stat-card"><div class="label">问题总数</div><div class="value">${items.length}</div></div>
+          <div class="stat-card"><div class="label">正常</div><div class="value">${byStatus['正常'] || 0}</div></div>
+          <div class="stat-card"><div class="label">延期修复</div><div class="value">${delayed}</div></div>
+          <div class="stat-card"><div class="label">已关闭</div><div class="value">${byStatus['已关闭'] || 0}</div></div>
+        </div>
+      `;
+    }
 
-            <div class="card" id="contact">
-                <h3 style="margin:0 0 8px 0">联系我们</h3>
-                <p style="margin:0 0 12px 0;color:var(--muted)">有问题或想要定制？发封邮件给我们。</p>
-                <form id="contactForm" onsubmit="return false;">
-                    <input type="text" id="cname" placeholder="姓名" required />
-                    <input type="email" id="cemail" placeholder="邮箱" required />
-                    <textarea id="cmsg" rows="4" placeholder="留言..." required></textarea>
-                    <div style="display:flex;gap:10px;align-items:center">
-                        <button type="submit">发送</button>
-                        <small id="contactStatus" style="color:var(--muted)"></small>
-                    </div>
-                </form>
-            </div>
-        </section>
+    function renderTable(items) {
+      const head = COLUMNS.map(c => `<th>${c.label}</th>`).join('');
+      const body = items.map(row => {
+        const cells = COLUMNS.map(col => {
+          let value = row[col.key] ?? '';
+          if (col.key === 'status') {
+            return `<td class="status ${statusClass(value)}">${value}</td>`;
+          }
+          return `<td>${value}</td>`;
+        }).join('');
+        return `<tr>${cells}</tr>`;
+      }).join('');
 
-        <footer>
-            <div style="color:var(--muted)">© 示例站 2026</div>
-            <div style="color:var(--muted)">Built with simple HTML/CSS/JS</div>
-        </footer>
-    </div>
+      return `
+        <div class="table-wrap">
+          <table>
+            <thead><tr>${head}</tr></thead>
+            <tbody>${body}</tbody>
+          </table>
+        </div>
+      `;
+    }
 
-    <script>
-        // 简单交互示例：表单验证与反馈
-        document.getElementById('signup').addEventListener('submit', function(e){
-            e.preventDefault();
-            const name = document.getElementById('name').value.trim();
-            const email = document.getElementById('email').value.trim();
-            if(!name || !email){ alert('请填写姓名与邮箱'); return; }
-            document.getElementById('msg').textContent = '已收到，谢谢！';
-            document.getElementById('submit').disabled = true;
-            setTimeout(()=>{ document.getElementById('msg').textContent = '我们会通过邮件发送最新动态。不会发送垃圾邮件。'; document.getElementById('submit').disabled = false; }, 2500);
-        });
+    function renderCharts(items) {
+      return `
+        <div class="charts">
+          <div class="chart-card">
+            <h2>问题类型分布</h2>
+            <canvas id="chart-type"></canvas>
+          </div>
+          <div class="chart-card">
+            <h2>问题状态占比</h2>
+            <canvas id="chart-status"></canvas>
+          </div>
+        </div>
+      `;
+    }
 
-        document.getElementById('contactForm').addEventListener('submit', function(e){
-            e.preventDefault();
-            const cemail = document.getElementById('cemail').value.trim();
-            const cname = document.getElementById('cname').value.trim();
-            const cmsg = document.getElementById('cmsg').value.trim();
-            if(!cname || !cemail || !cmsg){ document.getElementById('contactStatus').textContent = '请完整填写表单。'; return; }
-            document.getElementById('contactStatus').textContent = '发送中...';
-            setTimeout(()=>{ document.getElementById('contactStatus').textContent = '已发送，我们会尽快联系你。'; document.getElementById('contactForm').reset(); }, 1200);
-        });
+    function buildCharts(items) {
+      const typeCounts = countBy(items, 'type');
+      const statusCounts = countBy(items, 'status');
 
-        document.getElementById('get-started').addEventListener('click', ()=>{ window.scrollTo({top:0,behavior:'smooth'}); document.getElementById('name').focus(); });
-    </script>
+      new Chart(document.getElementById('chart-type'), {
+        type: 'bar',
+        data: {
+          labels: Object.keys(typeCounts),
+          datasets: [{
+            label: '数量',
+            data: Object.values(typeCounts),
+            backgroundColor: '#3b82f6',
+            borderRadius: 6,
+          }],
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
+        },
+      });
+
+      new Chart(document.getElementById('chart-status'), {
+        type: 'pie',
+        data: {
+          labels: Object.keys(statusCounts),
+          datasets: [{
+            data: Object.values(statusCounts),
+            backgroundColor: ['#0f766e', '#b91c1c', '#94a3b8'],
+          }],
+        },
+        options: { responsive: true },
+      });
+    }
+
+    function render() {
+      const root = document.getElementById('app');
+      const items = typeof ISSUES_DATA !== 'undefined' ? ISSUES_DATA : [];
+
+      if (!items.length) {
+        renderEmpty(root);
+        return;
+      }
+
+      root.innerHTML = `
+        <h1>问题数据看板</h1>
+        <p class="subtitle">数据来自 generate_data.py 生成的测试物料（data.csv / data.js）</p>
+        ${renderStats(items)}
+        ${renderCharts(items)}
+        ${renderTable(items)}
+      `;
+      buildCharts(items);
+    }
+
+    window.addEventListener('DOMContentLoaded', render);
+  </script>
 </body>
 </html>
